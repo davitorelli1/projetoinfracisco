@@ -1,0 +1,29 @@
+!Entrar no modo Exec Privilegiado
+enable
+    clock set 20:20:00 10 october 2025
+    configure terminal (super usuario)
+        hostname sw-01 (dar nome ao seu switch)
+        service password-encryption  (criptografar senhas)
+        service timestamps log datetime msec (marcação de hora)
+        logging buffered 4096 ()
+        no ip domain-lookup (não localizar os ips de nome (travamento))
+        banner motd #davi torelli LGPD# (mensagem automatica ao acessar switch)
+        enable secret 123@senac
+        username senac secret 123@senac
+        username tatuape password 123@senac
+        username admin privilege 15 secret 123@senac
+        no cdp run
+        no lldp run 
+        line console 0
+            login local 
+            password 123@senac
+            logging synchronous
+            exec-timeout 5 30     
+        
+
+
+    
+    
+        end
+    copy running-config startup-config (salvar)
+        
