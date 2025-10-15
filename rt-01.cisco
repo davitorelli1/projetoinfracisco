@@ -1,10 +1,13 @@
 !Entrar no modo Exec Privilegiado
 enable
-    clock set 20:20:00 10 october 2025
+    clock set 20:20:00 15 october 2025
     configure terminal 
-        hostname sw-02 
+        hostname rt-01 
         service password-encryption  
-        service timestamps log datetime msec 
+        security passwords min-length 8
+        login block-for 120 attempts 2 within 60
+        service timestamps log datetime msec
+        service timestamps debug datetime msec 
         logging buffered 4096 
         no ip domain-lookup 
         banner motd #davi torelli LGPD# 
@@ -27,18 +30,11 @@ enable
             transport input ssh 
             logging synchronous 
             exit
-        ip default-gateway 192.168.1.254
-        interface vlan 1
-            description interface de SVI
-            ip address 192.168.1.251 255.255.255.0
-            no shotdown
         !configurando acesso remoto SSH
         ip domain-name senac.br 
         crypto key generate rsa general-keys modulus 1024
         ip ssh version 2
         ip ssh time-out 60
         ip ssh authentication-retries 2
-        !CONFIGURAÇÃO INTERFACE LAN
-        interface gigabitethernet 0/0
-            description 
+        end
     copy running-config startup-config (salvar)

@@ -1,0 +1,65 @@
+EXPLICAÇÃO LINHA POR LINHA COMANDO ROTEADOR 
+ 
+ | !Entrar no modo Exec Privilegiado -- Comentário ou separador.
+
+ | enable -- Entrar no modo Exec Privilegiado (enable).
+
+ | clock set 20:20:00 15 october 2025 -- Define data e hora do equipamento.
+
+ | configure terminal -- Entrar no modo de configuração global.
+
+ | hostname rt-01 -- Define o nome do dispositivo.
+
+ | service password-encryption -- Ativa criptografia fraca (cifra reversível) para senhas em texto claro no arquivo de configuração.
+
+ | security passwords min-length 8 -- Define tamanho mínimo para senhas.
+
+ | login block-for 120 attempts 2 within 60 -- Configura bloqueio de login após tentativas falhas para mitigar brute force.
+
+ | service timestamps log datetime msec -- Adiciona carimbo de tempo às mensagens de log.
+
+010 | service timestamps debug datetime msec -- Adiciona carimbo de tempo às mensagens de debug.
+
+011 | logging buffered 4096 -- Define tamanho do buffer de logs local.
+
+012 | no ip domain-lookup -- Desativa resolução DNS para nomes incorretos digitados (evita delays).
+
+013 | banner motd #davi torelli LGPD# -- Mensagem do dia exibida no login (usa para avisos legais).
+
+014 | enable secret <REDACTED> -- Senha privilegiada (criptografada). Substituí por no arquivo público.
+
+015 | username senac secret <REDACTED> -- Cria usuário local; senha foi substituída por no arquivo público.
+
+016 | username tatuape password <REDACTED> -- Cria usuário local; senha foi substituída por no arquivo público.
+
+017 | ... -- Comentário ou separador.
+
+026 | line vty 0 4 -- Entradas VTY (acesso remoto) — configurações para Telnet/SSH.
+
+027 | login local -- Exige autenticação usando a base local de usuários.
+
+028 | password <REDACTED> -- Senha para acesso VTY (substituída por no arquivo público).
+
+029 | exec-timeout 5 30 -- Tempo de inatividade antes do timeout da sessão.
+
+030 | transport input ssh -- Define protocolos permitidos no acesso remoto (ex.: ssh).
+
+031 | logging synchronous -- Evita que mensagens de log atrapalhem a digitação no terminal.
+
+032 | exit -- Sai do modo atual (linha VTY) para o modo anterior.
+
+033 | !configurando acesso remoto SSH -- Comentário.
+
+034 | ip domain-name senac.br -- Define domínio para gerar chaves RSA para SSH.
+
+035 | crypto key generate rsa general-keys modulus 1024 -- Gera par de chaves RSA usado pelo SSH.
+
+036 | ip ssh version 2 -- Define usar SSHv2 (mais seguro que v1).
+
+037 | ip ssh time-out 60 -- Tempo de timeout para tentativas SSH.
+
+038 | ip ssh authentication-retries 2 -- Número de tentativas de autenticação SSH.
+
+039 | end -- Sai do modo de configuração e retorna ao exec.
+
+040 | copy running-config startup-config (salvar) -- Comando para salvar a configuração em memória NVRAM.
